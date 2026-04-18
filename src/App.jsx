@@ -9,8 +9,8 @@ import SplashScreen from './components/common/SplashScreen';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import CustomCursor from './components/common/CustomCursor';
-// 1. IMPORT YOUR NEW COMPONENT HERE
 import ScrollToTop from './components/common/ScrollToTop'; 
+import MobileNav from './components/common/MobileNav'; // <-- NEW IMPORT
 import Procurement from './pages/Procurement';
 import Contact from './pages/Contact';
 import Transparency from './pages/Transparency';
@@ -30,20 +30,20 @@ function App() {
 
   return (
     <Router>
-      {/* 2. PLACE IT HERE: Right inside the Router, above everything else */}
       <ScrollToTop /> 
       <CustomCursor />
       
-      <div className="min-h-screen w-full bg-transparent transition-colors duration-300">
+      <div className="min-h-screen w-full bg-transparent transition-colors duration-300 overflow-x-hidden">
         <AnimatePresence>
           {isLoading && <SplashScreen />}
         </AnimatePresence>
 
         {!isLoading && (
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen relative">
             <Navbar />
             
-            <main className="flex-grow">
+            {/* Added pb-20 on mobile so the MobileNav doesn't cover content */}
+            <main className="flex-grow pb-24 lg:pb-0">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about/procurement" element={<Procurement />} />
@@ -54,6 +54,10 @@ function App() {
             </main>
 
             <Footer />
+            
+            {/* NEW BOTTOM NAVIGATION */}
+            <MobileNav />
+
           </div>
         )}
       </div>

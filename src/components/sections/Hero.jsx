@@ -16,6 +16,18 @@ const Hero = () => {
     '/headerPicture8.png',
   ];
 
+  // ADDED: The mobile cropping array you requested
+  const mobileImagePositions = [
+    'object-[60%_center]',
+    'object-[55%_center]',
+    'object-[55%_center]',
+    'object-[75%_center]',
+    'object-[65%_center]',
+    'object-[50%_center]',
+    'object-[45%_center]',
+    'object-[50%_center]',
+  ];
+
   const cyclingWords = ['HOME', 'PRIDE', 'LEGACY'];
 
   useEffect(() => {
@@ -33,7 +45,8 @@ const Hero = () => {
   }, [cyclingWords.length]);
 
   return (
-    <section className="relative h-[112vh] w-full overflow-hidden bg-white dark:bg-[#030A17] pt-32 transition-colors duration-300"> 
+    // CHANGED: h-[85vh] is now h-[100dvh] so the mobile image extends fully to the bottom. lg:h-[112vh] is completely untouched.
+    <section className="relative h-[100dvh] lg:h-[112vh] w-full overflow-hidden bg-white dark:bg-[#030A17] pt-32 transition-colors duration-300"> 
       <div className="absolute inset-0 z-0">
         <AnimatePresence initial={false}>
           <motion.img
@@ -43,7 +56,8 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "linear" }}
-            className="w-full h-full object-cover object-center absolute inset-0"
+            // ADDED: The dynamic mobileImagePositions array, kept object-center for lg screens
+            className={`w-full h-full object-cover ${mobileImagePositions[currentIndex]} lg:object-center absolute inset-0`}
             alt="PSC Hero Background"
           />
         </AnimatePresence>
@@ -52,8 +66,7 @@ const Hero = () => {
       {/* ── LIGHT AND DARK MODE LOCALIZED OVERLAYS ── */}
       
       {/* Left side overlay: ~800px width, white gradient to transparent (light mode only) */}
-      <div className="absolute left100 top-0 h-full w-[0px] bg-gradient-to-r from-white/2
-      0 dark:from-[#030A17]/50 via-white/10 dark:via-[#030A17]/20 to-transparent z-10 pointer-events-none transition-colors duration-300" />
+      <div className="absolute left100 top-0 h-full w-[0px] bg-gradient-to-r from-white/20 dark:from-[#030A17]/50 via-white/10 dark:via-[#030A17]/20 to-transparent z-10 pointer-events-none transition-colors duration-300" />
       
       {/* Bottom overlay: ~166px height, white gradient to transparent (light mode only) */}
       <div className="absolute bottom-0 left-0 w-full h-[100px] bg-gradient-to-t from-white/-90 dark:from-[#030A17]/70 via-white/30 dark:via-[#030A17]/40 to-transparent z-10 pointer-events-none transition-colors duration-300" />
