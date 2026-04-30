@@ -1,21 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap');
 @import "tailwindcss";
 
 /* =====================================================
-   CRITICAL FIX FOR TAILWIND V4:
+   TAILWIND V4 DARK MODE VARIANT
    ===================================================== */
 @variant dark (&:where(.dark, .dark *));
 
+/* =====================================================
+   THEME VARIABLES
+   ===================================================== */
 @theme {
   --color-ph-blue: #0038A8;
   --color-ph-red: #CE1126;
   --color-ph-yellow: #FCD116;
 }
 
+/* =====================================================
+   GLOBAL SIZING & ZOOM (KEPT AS REQUESTED)
+   ===================================================== */
 :root {
   font-family: 'Poppins', sans-serif;
+  
   /* ── GLOBAL ZOOM ── */
-  /* Using zoom: 0.9 makes everything 10% smaller while maintaining fixed positions */
+  /* Keeps the navbar and layout at 90% scale */
   zoom: 0.9; 
   height: 100%;
   width: 100%;
@@ -30,7 +37,7 @@
 
   @media (max-width: 1024px) {
     font-size: 16px;
-    zoom: 1; /* Reset zoom on smaller tablets/mobile to ensure readability */
+    zoom: 1; /* Reset zoom on smaller tablets/mobile */
   }
 }
 
@@ -39,99 +46,108 @@
   html {
     transform: scale(0.9);
     transform-origin: top center;
-    width: 111.11%; /* Compensate for the scale down to prevent right-side gap */
+    width: 111.11%; /* Compensate for the scale down */
     margin-left: -5.55%;
   }
 }
 
-/* Switch browser UI to dark when .dark is active */
-.dark {
-  color-scheme: dark;
-}
+/* =====================================================
+   BASE STYLES
+   ===================================================== */
+@layer base {
+  /* Switch browser UI to dark when .dark is active */
+  .dark {
+    color-scheme: dark;
+  }
 
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  @apply text-gray-900 bg-white transition-colors duration-300;
+  body {
+    margin: 0;
+    @apply text-gray-900 bg-white transition-colors duration-300;
+    width: 100%; 
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
 
-  width: 100%; 
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-  
-}
+  .dark body {
+    @apply text-white bg-[#030A17];
+  }
 
-.dark body {
-  @apply text-white bg-[#030A17];
-}
+  #root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    text-align: left;
+    border-inline: none;
+  }
 
-#root {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  text-align: left;
-  border-inline: none;
-}
+  h1, h2 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-weight: 500;
+  }
 
-/* ... keep h1, h2, p, and code styles as they were ... */
+  h1 {
+    font-size: 56px;
+    letter-spacing: -1.68px;
+    margin: 32px 0;
+    @media (max-width: 1024px) {
+      font-size: 36px;
+      margin: 20px 0;
+    }
+  }
 
-h1, h2 {
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-weight: 500;
-}
+  h2 {
+    font-size: 24px;
+    line-height: 118%;
+    letter-spacing: -0.24px;
+    margin: 0 0 8px;
+    @media (max-width: 1024px) {
+      font-size: 20px;
+    }
+  }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  p { 
+    margin: 0; 
+  }
+
+  code {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 15px;
+    line-height: 135%;
+    padding: 4px 8px;
+    display: inline-flex;
+    border-radius: 4px;
+  }
+
+  /* ── INTERACTIVE ELEMENTS ── */
+  * {
+    user-select: none;
+  }
+
+  a, button, input {
+    pointer-events: auto;
   }
 }
 
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+/* =====================================================
+   CUSTOM UTILITIES (SCROLLBARS)
+   ===================================================== */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar { 
+    width: 4px; 
   }
-}
-
-p { margin: 0; }
-
-code {
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  display: inline-flex;
-  border-radius: 4px;
-}
-
-/* ── INTERACTIVE ELEMENTS ── */
-* {
-  /* Your custom cursor logic remains here */
-  cursor: none !important;
-  user-select: none;
-}
-
-a, button, input {
-  pointer-events: auto;
-}
-
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 999px;
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  .custom-scrollbar::-webkit-scrollbar-track { 
+    background: transparent; 
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 999px;
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }

@@ -1,14 +1,15 @@
 import React from 'react';
 import Hero from '../components/sections/Hero';
-import NewsUpdates from '../components/sections/NewsUpdates'; // Import it here
-import OfficialsSection from '../components/home/OfficialsSection';
+import NewsUpdates from '../components/sections/NewsUpdates';
+import SportsSection from '../components/sections/SportsSection'; // Import it here
 
 const Home = () => {
   return (
     <div className="w-full">
       <Hero />
       <NewsUpdates />
-      <OfficialsSection />
+      <SportsSection />
+      
     </div>
   );
 };

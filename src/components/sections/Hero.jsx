@@ -72,42 +72,42 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-full h-[100px] bg-gradient-to-t from-white/-90 dark:from-[#030A17]/70 via-white/30 dark:via-[#030A17]/40 to-transparent z-10 pointer-events-none transition-colors duration-300" />
 
       {/* Hero Text Content */}
-      <div className="relative h-full w-full z-20 px-4 md:px-20 lg:px-32 flex flex-col items-start justify-end pb-24">
-        {/* Changed to flex-col to naturally stack the elements without colliding */}
-        <div className="max-w-7xl w-full flex flex-col">
-          
-          <p className="text-white text-xs md:text-sm font-bold uppercase tracking-[0.15em] m-0 p-0 drop-shadow-lg relative translate-y-3 md:translate-y-4 z-10">
-            Welcome to the
-          </p>
+<div className="relative h-full w-full z-20 px-4 md:px-20 lg:px-32 flex flex-col items-start justify-end pb-24">
+  <div className="max-w-7xl w-full flex flex-col gap-0">
+    
+    {/* MOVED ABOVE: Welcome text */}
+    <p className="text-white text-xs md:text-sm font-bold uppercase tracking-[0.15em] mb-2 drop-shadow-lg relative z-10">
+      Welcome to the
+    </p>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-[0.9] m-0 p-0 font-bold drop-shadow-2xl relative z-0">
-            <div className="text-white font-bold leading-none m-0 p-0 flex items-center">
-              The&nbsp;
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentWord}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="inline-block font-bold bg-gradient-to-r from-[#fbd11e] to-[#fdff8d] bg-clip-text text-transparent drop-shadow-2xl"
-                >
-                  {cyclingWords[currentWord]}
-                </motion.span>
-              </AnimatePresence>
-              &nbsp;of Every
-            </div>
-            <div className="text-white font-bold leading-none m-0 p-0">
-              Filipino Athlete
-            </div>
-          </h1>
-
-          {/* CHANGED: Replaced mt-3 with a negative translation to pull it up tightly under the heading */}
-          <div className="m-0 p-0 text-white text-xs md:text-sm font-normal tracking-tight drop-shadow-lg relative -translate-y-2 md:-translate-y-3 z-10">
-            <p className="m-0">Pusong Pinoy. Lakas ng Atletang Pilipino.</p>
-          </div>
-        </div>
+    <h1 className="text-4xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-[0.9] m-0 p-0 font-bold drop-shadow-2xl relative z-0">
+      <div className="text-white font-bold leading-none m-0 p-0 flex items-center">
+        The&nbsp;
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={currentWord}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="inline-block font-bold bg-gradient-to-r from-[#fbd11e] to-[#fdff8d] bg-clip-text text-transparent drop-shadow-2xl"
+          >
+            {cyclingWords[currentWord]}
+          </motion.span>
+        </AnimatePresence>
+        &nbsp;of Every
       </div>
+      <div className="text-white font-bold leading-none m-0 p-0">
+        Filipino Athlete
+      </div>
+    </h1>
+
+    {/* MOVED BELOW: Tagline */}
+    <div className="mt-4 p-0 text-white text-xs md:text-sm font-normal tracking-tight drop-shadow-lg relative z-10">
+      <p className="m-0">Pusong Pinoy. Lakas ng Atletang Pilipino.</p>
+    </div>
+  </div>
+</div>
 
       {/* Smooth blend gradient to next section */}
       <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent via-white/20 dark:via-gray-900/50 to-gray-50 dark:to-gray-900 z-20 pointer-events-none transition-colors duration-300" />

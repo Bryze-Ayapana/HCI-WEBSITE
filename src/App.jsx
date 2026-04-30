@@ -8,13 +8,16 @@ import Home from './pages/Home';
 import SplashScreen from './components/common/SplashScreen';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
-import CustomCursor from './components/common/CustomCursor';
 import ScrollToTop from './components/common/ScrollToTop'; 
 import MobileNav from './components/common/MobileNav'; // <-- NEW IMPORT
 import Procurement from './pages/Procurement';
 import Contact from './pages/Contact';
 import Transparency from './pages/Transparency';
 import Podium from './pages/Podium';
+import RA6847 from './pages/RA6847';
+import HallOfFame from './pages/HallOfFame';
+import PSCProfile from './pages/PSCProfile'; // Case sensitive!
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +34,6 @@ function App() {
   return (
     <Router>
       <ScrollToTop /> 
-      <CustomCursor />
       
       <div className="min-h-screen w-full bg-transparent transition-colors duration-300 overflow-x-hidden">
         <AnimatePresence>
@@ -50,6 +52,9 @@ function App() {
                 <Route path="/contact-us" element={<Contact />} />
                 <Route path="/transparency" element={<Transparency />} />
                 <Route path="/the-podium" element={<Podium />} />
+                <Route path="/about/ra6847" element={<RA6847 />} />
+                <Route path="/about/hall-of-fame" element={<HallOfFame />} />
+                <Route path="/about/psc-profile" element={<PSCProfile />} />
               </Routes>
             </main>
 
