@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
 import Home from './pages/Home';
 import SplashScreen from './components/common/SplashScreen';
 import Navbar from './components/common/Navbar';
@@ -17,6 +16,8 @@ import Podium from './pages/Podium';
 import RA6847 from './pages/RA6847';
 import HallOfFame from './pages/HallOfFame';
 import PSCProfile from './pages/PSCProfile'; // Case sensitive!
+import Structure from './pages/Structure';
+import Articles from './pages/Articles';
 
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
                 <Route path="/about/ra6847" element={<RA6847 />} />
                 <Route path="/about/hall-of-fame" element={<HallOfFame />} />
                 <Route path="/about/psc-profile" element={<PSCProfile />} />
+                <Route path="/about/structure" element={<Structure />} />
+                <Route path="/article/:id" element={<Articles />} />
               </Routes>
             </main>
 

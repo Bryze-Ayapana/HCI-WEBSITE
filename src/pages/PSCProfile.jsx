@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiTarget, FiAward, FiStar } from 'react-icons/fi';
+import { FiTarget, FiAward, FiStar, FiChevronLeft } from 'react-icons/fi'; // Added FiChevronLeft
+import { useNavigate } from 'react-router-dom'; // Added useNavigate
 
 const PSCProfile = () => {
+  const navigate = useNavigate(); // Hook for back navigation
+
   const missionPoints = [
     "Coordinating and implementing a national sports program",
     "providing assistance to stakeholders and partners",
@@ -26,8 +29,23 @@ const PSCProfile = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#030A17] font-poppins text-gray-800 dark:text-slate-200 transition-colors duration-300 overflow-hidden">
       
+      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive Fix) ── */}
+      <div className="
+        lg:hidden flex items-center px-4 py-3 
+        bg-white dark:bg-[#030A17] 
+        text-gray-900 dark:text-white 
+        border-b border-gray-200 dark:border-gray-800 
+        sticky top-[52px] z-50 
+      ">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="flex-1 text-center font-bold text-sm uppercase tracking-wider pr-6">PSC Profile</span>
+      </div>
+
       {/* ── HERO SECTION ── */}
-      <section className="relative pt-40 pb-32 px-6 lg:px-8 flex flex-col items-center justify-center min-h-[75vh]">
+      {/* Added mt-[-52px] lg:mt-0 to pull the hero section up under the sticky header on mobile, preventing a gap */}
+      <section className="relative pt-40 pb-32 px-6 lg:px-8 flex flex-col items-center justify-center min-h-[75vh] mt-[-52px] lg:mt-0">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -46,7 +64,7 @@ const PSCProfile = () => {
             animate={{ opacity: 1, scale: 1 }}
             src="/favicon.svg"
             alt="PSC Logo"
-            className="w-32 h-32 md:w-40 md:h-40 object-contain mb-8 drop-shadow-2xl"
+            className="w-32 h-32 md:w-40 md:h-40 object-contain mb-8 drop-shadow-2xl mt-12 lg:mt-0" 
           />
 
           <motion.div
@@ -97,76 +115,72 @@ const PSCProfile = () => {
       </section>
 
       {/* ── VISION SECTION ── */}
-<section className="py-20 px-6 lg:px-8 relative z-10 bg-gray-50 dark:bg-[#030A17]">
-  <div className="max-w-5xl mx-auto text-center">
-    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-      className={`text-5xl md:text-6xl font-black tracking-tighter uppercase mb-8 ${goldGradient}`}>
-      Vision
-    </motion.h2>
+      <section className="py-20 px-6 lg:px-8 relative z-10 bg-gray-50 dark:bg-[#030A17]">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className={`text-5xl md:text-6xl font-black tracking-tighter uppercase mb-8 ${goldGradient}`}>
+            Vision
+          </motion.h2>
 
-    <p className="text-lg md:text-xl text-gray-600 dark:text-slate-300 font-medium leading-relaxed max-w-4xl mx-auto mb-16">
-      A Commission with a unified sports program which will enhance the quality of life of the Filipinos, instill national pride and attain international prestige through excellence in sports.
-    </p>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {visionSubPoints.map((text, index) => (
-        <motion.div 
-          key={index} 
-          initial={{ opacity: 0, y: 20 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          // ADDED: 'group' class para sa hover effect
-          className="group flex items-center gap-6 p-10 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] shadow-md dark:shadow-xl backdrop-blur-md hover:bg-white/50 dark:hover:bg-white/[0.05] transition-all"
-        >
-          {/* UPDATED: Icon with dynamic group-hover colors */}
-          <FiAward 
-            size={32} 
-            className="text-gray-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-ph-yellow transition-colors duration-300" 
-          />
-          <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-slate-100 text-left group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-            {text}
+          <p className="text-lg md:text-xl text-gray-600 dark:text-slate-300 font-medium leading-relaxed max-w-4xl mx-auto mb-16">
+            A Commission with a unified sports program which will enhance the quality of life of the Filipinos, instill national pride and attain international prestige through excellence in sports.
           </p>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
 
-{/* ── OBJECTIVE SECTION ── */}
-<section className="py-20 px-6 lg:px-8 relative z-10 bg-gray-50 dark:bg-[#030A17] pb-40">
-  <div className="max-w-5xl mx-auto text-center">
-    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-      className={`text-5xl md:text-6xl font-black tracking-tighter uppercase mb-8 ${goldGradient}`}>
-      Objective
-    </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {visionSubPoints.map((text, index) => (
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                viewport={{ once: true }}
+                className="group flex items-center gap-6 p-10 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] shadow-md dark:shadow-xl backdrop-blur-md hover:bg-white/50 dark:hover:bg-white/[0.05] transition-all"
+              >
+                <FiAward 
+                  size={32} 
+                  className="text-gray-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-ph-yellow transition-colors duration-300" 
+                />
+                <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-slate-100 text-left group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  {text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    <p className="text-lg md:text-xl text-gray-500 dark:text-slate-400 font-medium leading-relaxed max-w-3xl mx-auto mb-16 italic">
-      In view of the foregoing guiding principles, vision and mission statement, the PSC will pursue two basic objectives:
-    </p>
+      {/* ── OBJECTIVE SECTION ── */}
+      <section className="py-20 px-6 lg:px-8 relative z-10 bg-gray-50 dark:bg-[#030A17] pb-40">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className={`text-5xl md:text-6xl font-black tracking-tighter uppercase mb-8 ${goldGradient}`}>
+            Objective
+          </motion.h2>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {objectives.map((text, index) => (
-        <motion.div 
-          key={index} 
-          initial={{ opacity: 0, y: 20 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          // ADDED: 'group' class para sa hover effect
-          className="group flex items-center gap-6 p-10 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] shadow-md dark:shadow-xl backdrop-blur-md hover:bg-white/50 dark:hover:bg-white/[0.05] transition-all"
-        >
-          {/* UPDATED: Icon with dynamic group-hover colors */}
-          <FiStar 
-            size={32} 
-            className="text-gray-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-ph-yellow transition-colors duration-300" 
-          />
-          <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-slate-100 text-left group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-            {text}
+          <p className="text-lg md:text-xl text-gray-500 dark:text-slate-400 font-medium leading-relaxed max-w-3xl mx-auto mb-16 italic">
+            In view of the foregoing guiding principles, vision and mission statement, the PSC will pursue two basic objectives:
           </p>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {objectives.map((text, index) => (
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                viewport={{ once: true }}
+                className="group flex items-center gap-6 p-10 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/[0.02] shadow-md dark:shadow-xl backdrop-blur-md hover:bg-white/50 dark:hover:bg-white/[0.05] transition-all"
+              >
+                <FiStar 
+                  size={32} 
+                  className="text-gray-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-ph-yellow transition-colors duration-300" 
+                />
+                <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-800 dark:text-slate-100 text-left group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  {text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
     </div>
   );

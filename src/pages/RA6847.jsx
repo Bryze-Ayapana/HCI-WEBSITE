@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiChevronLeft } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const sections = [
+  // ... (sections data remains exactly the same as provided)
   {
     title: 'Section 1. Title of the Act.',
     content: <p>This Act shall be known and cited as the <strong>"Philippine Sports Commission Act."</strong></p>,
@@ -29,7 +31,6 @@ const sections = [
       <>
         <p className="font-semibold mb-3">The Objectives of the Commission are:</p>
         <div className="space-y-3 text-sm leading-relaxed">
-          {/* ✅ text-ph-blue in light, text-ph-yellow in dark */}
           <p><span className="text-ph-blue dark:text-ph-yellow font-bold">(a)</span> To provide the leadership, formulate the policies and set the priorities and direction of all national amateur sports promotion and development, particularly giving emphasis on grass-roots participation;</p>
           <p><span className="text-ph-blue dark:text-ph-yellow font-bold">(b)</span> To encourage wide participation of all sectors, government and private, in amateur sports promotion and development;</p>
           <p><span className="text-ph-blue dark:text-ph-yellow font-bold">(c)</span> To coordinate the development and implementation of programs for the discovery and development of athletic talents;</p>
@@ -122,25 +123,38 @@ const AccordionItem = ({ section, index, isOpen, onToggle }) => {
 
 const RA6847 = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const navigate = useNavigate();
 
   const handleToggle = (index) => {
     setOpenIndex(prev => prev === index ? null : index);
   };
 
   return (
-    <div className="min-h-screen transition-colors duration-300 pt-32 pb-20 px-4 bg-gray-50 dark:bg-[#080e1c] text-gray-900 dark:text-white">
+    <div className="min-h-screen transition-colors duration-300 pt-16 md:pt-32 pb-20 px-4 bg-gray-50 dark:bg-[#080e1c] text-gray-900 dark:text-white">
+      
+      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive Fix) ── */}
+      <div className="
+        lg:hidden flex items-center px-4 py-3 
+        bg-white dark:bg-[#030A17] 
+        text-gray-900 dark:text-white 
+        border-b border-gray-200 dark:border-gray-800 
+        sticky top-[52px] z-40 
+        -mx-4 mt-[-16px]
+      ">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="flex-1 text-center font-bold text-sm uppercase tracking-wider pr-6">RA 6847</span>
+      </div>
 
-      {/* Glow — dark only */}
       <div
         className="fixed inset-0 pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-300"
         style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 10%, rgba(30,60,140,0.2) 0%, transparent 70%)' }}
       />
 
-      <div className="relative z-10 max-w-3xl mx-auto">
-
+      <div className="relative z-10 max-w-3xl mx-auto mt-8">
         {/* ── HEADER ── */}
         <div className="text-center mb-12 px-4">
-
           <div className="w-full flex justify-center mb-6">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-gray-900 dark:text-white text-center">
               RA 6847
@@ -155,15 +169,14 @@ const RA6847 = () => {
             </p>
           </div>
 
-          {/* Divider — blue in light, yellow in dark */}
           <div className="w-full flex justify-center mb-6">
             <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-ph-blue dark:via-ph-yellow to-transparent" />
           </div>
 
           <div className="w-full flex justify-center">
-            <p className="italic text-xs text-gray-500 dark:text-gray-400 text-center whitespace-nowrap">
-  Be it enacted by the Senate and House of Representatives of the Philippines in Congress assembled:
-</p>
+            <p className="italic text-xs text-gray-500 dark:text-gray-400 text-center max-w-xs md:max-w-none">
+              Be it enacted by the Senate and House of Representatives of the Philippines in Congress assembled:
+            </p>
           </div>
         </div>
 

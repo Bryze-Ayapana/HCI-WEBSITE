@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiDownload, FiArrowRight, FiChevronLeft, FiChevronRight, FiPlay, FiCheckCircle, FiCalendar, FiX, FiMaximize2 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 // ── Enshrinee batches ──
 const batches = [
@@ -19,6 +20,7 @@ const HallOfFame = ({ darkMode = false }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxSrc, setLightboxSrc] = useState('');
   const [lightboxLabel, setLightboxLabel] = useState('');
+  const navigate = useNavigate();
 
   const handlePrev = () => setActiveBatch(p => (p === 0 ? batches.length - 1 : p - 1));
   const handleNext = () => setActiveBatch(p => (p === batches.length - 1 ? 0 : p + 1));
@@ -46,6 +48,21 @@ const HallOfFame = ({ darkMode = false }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-zinc-100 transition-colors duration-300 overflow-x-hidden">
+
+      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive & Magkadikit Fix) ── */}
+      <div className="
+        lg:hidden flex items-center px-4 py-3 
+        bg-white dark:bg-[#030A17] 
+        text-gray-900 dark:text-white 
+        border-b border-gray-200 dark:border-gray-800 
+        sticky top-[52px] z-40 
+        mt-[52px]
+      ">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="flex-1 text-center font-bold text-sm uppercase tracking-wider pr-6">Hall of Fame</span>
+      </div>
 
       {/* ══════════════════════════════════════
           IMAGE LIGHTBOX OVERLAY
@@ -97,11 +114,16 @@ const HallOfFame = ({ darkMode = false }) => {
       {/* ══════════════════════════════════════
           HERO BANNER — image only, no text, no gradient
       ══════════════════════════════════════ */}
-      <section className="relative h-[85vh] min-h-[600px] overflow-hidden">
+      <section className="relative w-full overflow-hidden bg-black flex items-center">
         <img
           src="/HallOfFameBanner.png"
           alt="Hall of Fame Banner"
-          className="absolute inset-0 w-full h-full object-cover"
+          /* 
+             h-auto prevents black borders on mobile, 
+             w-full keeps it from cutting, 
+             md classes maintain original desktop look! 
+          */
+          className="w-full h-auto md:h-[85vh] md:min-h-[600px] object-cover"
         />
         {/* Thin gold top accent line only */}
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
@@ -127,9 +149,9 @@ const HallOfFame = ({ darkMode = false }) => {
                 The Legal Foundation
               </span>
 
-             <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-6 text-gray-900 dark:text-white leading-none">
-            Republic Act No. 8757
-            </h2>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-6 text-gray-900 dark:text-white leading-none">
+                Republic Act No. 8757
+              </h2>
 
               <p className="text-gray-600 dark:text-zinc-400 text-base leading-relaxed mb-4 font-medium">
                 Established on March 25, 1999, RA 8757 institutionalized the Philippine Sports Hall of Fame to immortalize the names of Filipino athletes, coaches, and sports administrators who have contributed significantly to the promotion and development of sports in the Philippines.
@@ -184,8 +206,8 @@ const HallOfFame = ({ darkMode = false }) => {
                 Class of Champions
               </span>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 dark:text-white leading-none antialiased">
-  {batches[activeBatch].label}
-</h2>
+                {batches[activeBatch].label}
+              </h2>
             </div>
 
             {/* Batch navigation */}
@@ -295,18 +317,18 @@ const HallOfFame = ({ darkMode = false }) => {
       <section className="py-24 bg-white dark:bg-zinc-900 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="flex flex-col items-center justify-center text-center mb-16">
-  <span className="text-[11px] font-black tracking-[0.22em] uppercase text-[#003b93] dark:text-[#D4AF37] mb-4 block">
-    Ceremony Highlights
-  </span>
+            <span className="text-[11px] font-black tracking-[0.22em] uppercase text-[#003b93] dark:text-[#D4AF37] mb-4 block">
+              Ceremony Highlights
+            </span>
 
-  <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-none">
-    4th Enshrinement Ceremony
-  </h2>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-none">
+              4th Enshrinement Ceremony
+            </h2>
 
-  <p className="text-gray-500 dark:text-zinc-500 font-medium leading-relaxed max-w-2xl mx-auto text-center">
-    Relive the moments of triumph and the induction of our latest sporting heroes into the eternal halls of greatness.
-  </p>
-</div>
+            <p className="text-gray-500 dark:text-zinc-500 font-medium leading-relaxed max-w-2xl mx-auto text-center">
+              Relive the moments of triumph and the induction of our latest sporting heroes into the eternal halls of greatness.
+            </p>
+          </div>
 
           {/* YouTube embed with custom play overlay */}
           <div className="relative group rounded-2xl overflow-hidden shadow-2xl bg-zinc-900 aspect-video">
@@ -362,13 +384,6 @@ const HallOfFame = ({ darkMode = false }) => {
 
       {/* ══════════════════════════════════════
           CALL FOR NOMINATIONS
-          dark mode → #18181b solid
-          light mode → blue gradient (unchanged)
-      ══════════════════════════════════════ */}
-      {/* ══════════════════════════════════════
-          CALL FOR NOMINATIONS
-          dark mode → #18181b solid
-          light mode → blue gradient (unchanged)
       ══════════════════════════════════════ */}
       <section className="py-24 bg-gray-50 dark:bg-zinc-950 px-6 md:px-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
@@ -402,57 +417,51 @@ const HallOfFame = ({ darkMode = false }) => {
               <div className="flex-1">
                 {/* Super bold large heading */}
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white dark:text-white leading-none tracking-tighter mb-4">
-  Continuing the{' '}
-  <span
-    className="text-transparent bg-clip-text"
-    style={{ backgroundImage: 'linear-gradient(135deg, #BF953F, #FCF6BA, #D4AF37)' }}
-  >
-    Legacy.
-  </span>
-</h2>
+                  Continuing the{' '}
+                  <span
+                    className="text-transparent bg-clip-text"
+                    style={{ backgroundImage: 'linear-gradient(135deg, #BF953F, #FCF6BA, #D4AF37)' }}
+                  >
+                    Legacy.
+                  </span>
+                </h2>
 
-                {/* Smaller body text, adjusted spacing before the grid */}
+                {/* Smaller body text, fixed the HTML typo in className */}
                 <p
-classclassName="text-sm leading-relaxed max-w-xl font-medium mb-12"
-Name="text-sm leading-relaxed max-w-xl font-medium mb-8"
+                  className="text-sm leading-relaxed max-w-xl font-medium mb-12"
                   style={{ color: darkMode ? 'rgba(200,200,210,0.75)' : 'rgb(219,234,254)' }}
                 >
                   Do you know a Filipino athlete, coach, or trainer whose contributions have reshaped our sporting history? Help us identify the next set of legends to be immortalized in the Philippine Sports Hall of Fame.
                 </p>
 
-                {/* Grid — added mt-16 to push it lower */}
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12 mb-8">
-  <div className="flex gap-4">
-    <FiCheckCircle size={20} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
-    <div>
-      <h4 className="text-white font-bold text-sm mb-1">Qualification Check</h4>
-      <p
-        className="text-xs leading-relaxed font-medium"
-        style={{ color: darkMode ? 'rgba(180,180,190,0.70)' : 'rgb(147,197,253)' }}
-      >
-        Nominees must have competed or served at the highest level of international competition.
-      </p>
-    </div>
-  </div>
-  <div className="flex gap-4">
-    <FiCalendar size={20} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
-    <div>
-      <h4 className="text-white font-bold text-sm mb-1">Open Submission</h4>
-      <p
-        className="text-xs leading-relaxed font-medium"
-        style={{ color: darkMode ? 'rgba(180,180,190,0.70)' : 'rgb(147,197,253)' }}
-      >
-        Nominations are currently open for the 5th Enshrinement Batch.
-      </p>
-    </div>
-  </div>
-</div>
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12 mb-8">
+                  <div className="flex gap-4">
+                    <FiCheckCircle size={20} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-white font-bold text-sm mb-1">Qualification Check</h4>
+                      <p
+                        className="text-xs leading-relaxed font-medium"
+                        style={{ color: darkMode ? 'rgba(180,180,190,0.70)' : 'rgb(147,197,253)' }}
+                      >
+                        Nominees must have competed or served at the highest level of international competition.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <FiCalendar size={20} className="text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-white font-bold text-sm mb-1">Open Submission</h4>
+                      <p
+                        className="text-xs leading-relaxed font-medium"
+                        style={{ color: darkMode ? 'rgba(180,180,190,0.70)' : 'rgb(147,197,253)' }}
+                      >
+                        Nominations are currently open for the 5th Enshrinement Batch.
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-                {/*
-                  Nominate button:
-                  - light mode → text is blue (#003b93)
-                  - dark mode  → text stays dark (zinc-950 readable on gold)
-                */}
                 <button
                   onClick={handleNominate}
                   className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-black uppercase tracking-widest text-sm transition-all hover:opacity-90 active:scale-95 shadow-[0_0_40px_rgba(212,175,55,0.4)]"

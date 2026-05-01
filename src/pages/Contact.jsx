@@ -1,8 +1,11 @@
 import React from 'react';
-import { FiFacebook, FiInstagram, FiYoutube } from 'react-icons/fi';
+import { FiFacebook, FiInstagram, FiYoutube, FiChevronLeft } from 'react-icons/fi'; // Added FiChevronLeft
 import { BsTwitterX } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom'; // Added useNavigate
 
 const Contact = () => {
+  const navigate = useNavigate(); // Hook for back navigation
+
   const agencyDirectories = [
     {
       title: "Commission Proper",
@@ -62,10 +65,26 @@ const Contact = () => {
 
   return (
     /* PAGE BACKGROUND */
-    <div className="min-h-screen bg-white dark:bg-transparent pt-32 px-6 md:px-12 lg:px-24 pb-20 font-poppins transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-transparent pt-16 md:pt-32 px-6 md:px-12 lg:px-24 pb-20 font-poppins transition-colors duration-300">
+
+      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive Fix) ── */}
+      <div className="
+        lg:hidden flex items-center px-4 py-3 
+        bg-white dark:bg-[#030A17] 
+        text-gray-900 dark:text-white 
+        border-b border-gray-200 dark:border-gray-800 
+        sticky top-[52px] z-50 
+        -mx-6 mt-[-16px] mb-8
+      ">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="flex-1 text-center font-bold text-sm uppercase tracking-wider pr-6">Contact Us</span>
+      </div>
 
       {/* TOP SECTION */}
-      <div className="flex flex-col lg:flex-row gap-12 mb-20">
+      {/* Changed to flex-col-reverse so Map goes on top in mobile, keeps side-by-side in desktop */}
+      <div className="flex flex-col-reverse lg:flex-row gap-12 mb-20">
 
         {/* Left: Contact Details */}
         <div className="w-full lg:w-1/3 space-y-8 mt-2">

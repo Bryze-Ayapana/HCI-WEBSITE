@@ -1,7 +1,9 @@
 import React from 'react';
+
 import Hero from '../components/sections/Hero';
 import NewsUpdates from '../components/sections/NewsUpdates';
-import SportsSection from '../components/sections/SportsSection'; // Import it here
+import SportsSection from '../components/sections/SportsSection';
+import MVPSection from '../components/sections/MVPSection';
 
 const Home = () => {
   return (
@@ -9,7 +11,7 @@ const Home = () => {
       <Hero />
       <NewsUpdates />
       <SportsSection />
-      
+      <MVPSection />
     </div>
   );
 };

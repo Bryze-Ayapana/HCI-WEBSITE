@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FiChevronLeft, FiSliders } from 'react-icons/fi'; // Added Icons
+import { useNavigate } from 'react-router-dom'; // Added navigation hook
 
 const Podium = () => {
+  const navigate = useNavigate();
+
   // ── UPPER CAROUSEL BANNER LOGIC ──
   const [currentBanner, setCurrentBanner] = useState(0);
   const podiumBanners = [
@@ -20,13 +24,10 @@ const Podium = () => {
   }, [podiumBanners.length]);
 
   // ── SCROLL MANAGEMENT ──
-  // Reference to the top of the gallery section
   const galleryRef = useRef(null);
 
-  // Helper function to scroll to the top of the gallery smoothly
   const scrollToGalleryTop = () => {
     if (galleryRef.current) {
-      // Offset by 150px to account for the sticky header/navbar
       const yOffset = -150; 
       const y = galleryRef.current.getBoundingClientRect().top + window.scrollY + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
@@ -36,18 +37,17 @@ const Podium = () => {
   // ── SIDEBAR FILTER & MAGAZINE DATA LOGIC (2016 to 2025) ──
   const years = Array.from({ length: 10 }, (_, i) => 2025 - i);
   const [selectedYears, setSelectedYears] = useState([]);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false); // State for mobile dropdown filter
 
   const toggleYear = (year) => {
     setSelectedYears((prev) => 
       prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
     );
-    // Scroll to the top of the gallery when filtering
     scrollToGalleryTop();
   };
 
   const setAllYears = () => {
     setSelectedYears([]);
-    // Scroll to the top of the gallery when clearing filters
     scrollToGalleryTop();
   };
 
@@ -114,10 +114,25 @@ const Podium = () => {
   };
 
   return (
-    <div className="min-h-screen pt-40 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col gap-16 relative z-10 transition-colors duration-300">
+    <div className="min-h-screen pt-16 md:pt-40 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col gap-10 md:gap-16 relative z-10 transition-colors duration-300">
       
+      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive Fix) ── */}
+      <div className="
+        lg:hidden flex items-center px-4 py-3 
+        bg-white dark:bg-[#030A17] 
+        text-gray-900 dark:text-white 
+        border-b border-gray-200 dark:border-gray-800 
+        sticky top-[52px] z-50 
+        -mx-4 mt-[-16px]
+      ">
+        <button onClick={() => navigate(-1)} className="p-1">
+          <FiChevronLeft size={20} />
+        </button>
+        <span className="flex-1 text-center font-bold text-sm uppercase tracking-wider pr-6">The Podium</span>
+      </div>
+
       {/* ── 1. UPPER CAROUSEL ── */}
-      <section className="relative w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-gray-800">
+      <section className="relative w-full h-[300px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-gray-800">
         <AnimatePresence initial={false}>
           <motion.img key={currentBanner} src={podiumBanners[currentBanner].src} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0 w-full h-full object-cover" />
         </AnimatePresence>
@@ -130,12 +145,10 @@ const Podium = () => {
       </section>
 
       {/* ── 2. SIDEBAR FILTER & CATEGORIZED GALLERY ── */}
-      {/* Added the ref here so we can scroll back to the top of this section */}
       <section ref={galleryRef} className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start w-full scroll-mt-32">
         
-        {/* LEFT COLUMN: Shrunk width to w-[250px] */}
-        <div className="w-full lg:w-[250px] flex-shrink-0 flex flex-col gap-6 sticky top-32 lg:border-r border-gray-200 dark:border-white/10 lg:pr-6">
-          
+        {/* DESKTOP LEFT COLUMN: Filter Sidebar (Hidden on Mobile) */}
+        <div className="hidden lg:flex w-full lg:w-[250px] flex-shrink-0 flex-col gap-6 sticky top-32 lg:border-r border-gray-200 dark:border-white/10 lg:pr-6">
           <div className="flex flex-col relative">
            <h1 className="text-[40px] md:text-[50px] font-black uppercase tracking-tight 
             bg-gradient-to-r 
@@ -149,42 +162,86 @@ const Podium = () => {
             </p>
           </div>
 
-          {/* Filter Container */}
           <div className="bg-white dark:bg-[#111827] border border-gray-200 dark:border-white/10 rounded-xl p-4 shadow-sm">
             <div className="flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-2 mb-3">
-              <h3 className="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px]">
-                FILTER
-              </h3>
+              <h3 className="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px]">FILTER</h3>
               {selectedYears.length > 0 && (
-                <button onClick={setAllYears} className="text-[11px] text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors">
-                  Clear
-                </button>
+                <button onClick={setAllYears} className="text-[11px] text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors">Clear</button>
               )}
             </div>
-
             <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
               <label className="flex items-center gap-2.5 cursor-pointer group mb-0.5">
                 <input type="checkbox" checked={selectedYears.length === 0} onChange={setAllYears} className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 accent-blue-600" />
-                <span className={`text-[13px] font-bold transition-colors duration-200 ${selectedYears.length === 0 ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500'}`}>
-                  All Years
-                </span>
+                <span className={`text-[13px] font-bold transition-colors duration-200 ${selectedYears.length === 0 ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500'}`}>All Years</span>
               </label>
-
               {years.map((year) => (
                 <label key={year} className="flex items-center gap-2.5 cursor-pointer group">
                   <input type="checkbox" checked={selectedYears.includes(year)} onChange={() => toggleYear(year)} className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 accent-blue-600" />
-                  <span className={`text-[13px] font-medium transition-colors duration-200 ${selectedYears.includes(year) ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500'}`}>
-                    {year}
-                  </span>
+                  <span className={`text-[13px] font-medium transition-colors duration-200 ${selectedYears.includes(year) ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-500'}`}>{year}</span>
                 </label>
               ))}
             </div>
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
-        <div className="flex-1 w-full flex flex-col gap-14 min-h-[100vh] relative"> 
-          <div className="flex flex-col gap-14">
+        {/* RIGHT COLUMN (Gallery & Mobile Header) */}
+        <div className="flex-1 w-full flex flex-col gap-6 lg:gap-14 min-h-[100vh] relative"> 
+          
+          {/* MOBILE ONLY: Inline Header with Filter Button (Matches reference image) */}
+          <div className="flex lg:hidden justify-between items-start w-full mb-4">
+            <div className="flex flex-col relative">
+             <h1 className="text-2xl font-black uppercase tracking-tight text-ph-yellow leading-tight break-words pb-1">
+                THE PODIUM
+              </h1>
+              <p className="text-sm text-gray-700 dark:text-gray-200 font-medium m-0 leading-none">
+                Ang Galing ng Pilipino
+              </p>
+            </div>
+            
+            {/* Mobile Filter Button */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#0a1128] text-white rounded text-xs font-bold shadow-md border border-white/10"
+              >
+                <FiSliders size={12} /> YEAR
+              </button>
+
+              {/* Mobile Filter Dropdown */}
+              <AnimatePresence>
+                {isMobileFilterOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-[#111827] border border-gray-200 dark:border-white/10 rounded-xl p-4 shadow-2xl z-20"
+                  >
+                    <div className="flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-2 mb-3">
+                      <h3 className="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px]">FILTER</h3>
+                      {selectedYears.length > 0 && (
+                        <button onClick={() => { setAllYears(); setIsMobileFilterOpen(false); }} className="text-[11px] text-red-500 font-medium">Clear</button>
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                      <label className="flex items-center gap-2.5 cursor-pointer">
+                        <input type="checkbox" checked={selectedYears.length === 0} onChange={() => { setAllYears(); setIsMobileFilterOpen(false); }} className="w-3.5 h-3.5 rounded text-blue-600" />
+                        <span className="text-[13px] font-bold text-gray-700 dark:text-gray-300">All Years</span>
+                      </label>
+                      {years.map((year) => (
+                        <label key={year} className="flex items-center gap-2.5 cursor-pointer">
+                          <input type="checkbox" checked={selectedYears.includes(year)} onChange={() => toggleYear(year)} className="w-3.5 h-3.5 rounded text-blue-600" />
+                          <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">{year}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* MAGAZINE GALLERY */}
+          <div className="flex flex-col gap-10 lg:gap-14">
             {activeYears.map((year) => {
               const issues = getIssuesForYear(year);
               return (
@@ -195,15 +252,16 @@ const Podium = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="flex flex-col gap-6"
+                  className="flex flex-col gap-4 lg:gap-6"
                 >
-                  <div className="border-b border-gray-200 dark:border-white/10 pb-2">
-                    <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+                  <div className="border-b border-gray-300 dark:border-white/10 pb-2">
+                    <h2 className="text-lg lg:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                       {year}
                     </h2>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-6">
+                  {/* Grid updated to show 3 items per row on mobile to match image */}
+                  <div className="grid grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6">
                     {issues.map((issue) => (
                       <motion.div 
                         layout="position"
@@ -211,9 +269,9 @@ const Podium = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => window.open(issue.link, '_blank')}
-                        className="relative p-[3px] rounded-xl transition-all duration-300 bg-transparent hover:bg-gradient-to-br hover:from-amber-500 hover:to-orange-500 dark:hover:from-blue-500 dark:hover:to-cyan-400 shadow-md hover:shadow-xl cursor-pointer group"
+                        className="relative p-[2px] lg:p-[3px] rounded-lg lg:rounded-xl transition-all duration-300 bg-transparent hover:bg-gradient-to-br hover:from-amber-500 hover:to-orange-500 dark:hover:from-blue-500 dark:hover:to-cyan-400 shadow hover:shadow-xl cursor-pointer group"
                       >
-                        <div className="relative aspect-[3/4] bg-gray-100 dark:bg-[#0a0a0a] rounded-lg overflow-hidden h-full w-full">
+                        <div className="relative aspect-[3/4] bg-gray-100 dark:bg-[#0a0a0a] rounded-md lg:rounded-lg overflow-hidden h-full w-full">
                           <img 
                             src={issue.src} 
                             alt={issue.alt}
@@ -221,11 +279,11 @@ const Podium = () => {
                             onError={(e) => {
                                e.target.onerror = null; 
                                e.target.style.display = 'none';
-                               e.target.parentNode.innerHTML = `<div class="flex items-center justify-center h-full w-full text-xs text-gray-400 text-center p-4 bg-gray-200 dark:bg-gray-800">Cover Coming Soon<br/>${issue.year}</div>`;
+                               e.target.parentNode.innerHTML = `<div class="flex items-center justify-center h-full w-full text-[10px] lg:text-xs text-gray-400 text-center p-2 lg:p-4 bg-gray-200 dark:bg-gray-800">Cover Coming Soon<br/>${issue.year}</div>`;
                             }}
                           />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span className="text-white font-bold tracking-widest uppercase text-xs px-4 py-2 border border-white/50 rounded backdrop-blur-sm">
+                            <span className="text-white font-bold tracking-widest uppercase text-[10px] lg:text-xs px-2 py-1 lg:px-4 lg:py-2 border border-white/50 rounded backdrop-blur-sm">
                               Read
                             </span>
                           </div>
