@@ -48,7 +48,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Custom Toggle Switch (Matches image_76d857.png) */}
+          {/* Custom Toggle Switch */}
           <button 
             onClick={toggleTheme}
             className="relative w-10 h-5 rounded-full bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 transition-colors duration-300"
@@ -68,7 +68,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ── DESKTOP SECONDARY NAV (RESTORED) ── */}
+      {/* ── DESKTOP SECONDARY NAV ── */}
       <div className="hidden lg:flex relative z-20 bg-gray-100/80 dark:bg-[#0a0a0a]/40 backdrop-blur-lg border-b border-gray-300 dark:border-white/10 px-10 text-[10px] font-bold uppercase tracking-tight">
         <div className="flex items-stretch flex-1">
           <a href="https://www.gov.ph" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-gray-700 dark:text-white hover:text-ph-blue dark:hover:text-ph-yellow border-r border-gray-300 dark:border-white/20 transition-colors duration-200">
@@ -135,8 +135,25 @@ const Navbar = () => {
               <MobileLink to="/transparency" label="TRANSPARENCY SEAL" />
               <MobileLink to="/the-podium" label="THE PODIUM" />
               <MobileLink to="/contact-us" label="CONTACT US" />
+              
+              {/* ── FUNCTIONAL SOCIAL LINKS ── */}
               <div className="mt-8 flex justify-center gap-4">
-                <SocialIcon icon={<FiFacebook />} /> <SocialIcon icon={<FiYoutube />} /> <SocialIcon icon={<FiInstagram />} /> <SocialIcon icon={<FiTwitter />} />
+                <SocialIcon 
+                  href="https://www.facebook.com/psc.gov.ph?_rdc=1&_rdr" 
+                  icon={<FiFacebook />} 
+                /> 
+                <SocialIcon 
+                  href="https://www.youtube.com/@psc_gov" 
+                  icon={<FiYoutube />} 
+                /> 
+                <SocialIcon 
+                  href="https://www.instagram.com/phil.sportscommission/" 
+                  icon={<FiInstagram />} 
+                /> 
+                <SocialIcon 
+                  href="https://x.com/psc_gov" 
+                  icon={<FiTwitter />} 
+                />
               </div>
             </div>
           </motion.div>
@@ -159,8 +176,16 @@ const MobileLink = ({ to, label }) => (
   <Link to={to} className="text-lg font-bold text-gray-800 dark:text-gray-300 tracking-widest uppercase hover:text-ph-blue dark:hover:text-ph-yellow transition-colors">{label}</Link>
 );
 
-const SocialIcon = ({ icon }) => (
-  <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-600 dark:text-white border border-gray-200 dark:border-white/10">{icon}</div>
+// Updated SocialIcon to accept an href prop and render as an <a> tag
+const SocialIcon = ({ href, icon }) => (
+  <a 
+    href={href} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="w-10 h-10 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-600 dark:text-white border border-gray-200 dark:border-white/10 hover:scale-110 hover:bg-ph-blue hover:text-white dark:hover:bg-ph-yellow dark:hover:text-black transition-all"
+  >
+    {icon}
+  </a>
 );
 
 export default Navbar;
