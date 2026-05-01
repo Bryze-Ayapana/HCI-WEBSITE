@@ -80,27 +80,27 @@ const Hero = () => {
       Welcome to the
     </p>
 
-    <h1 className="text-4xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-[0.9] m-0 p-0 font-bold drop-shadow-2xl relative z-0">
-      <div className="text-white font-bold leading-none m-0 p-0 flex items-center">
-        The&nbsp;
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={currentWord}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="inline-block font-bold bg-gradient-to-r from-[#fbd11e] to-[#fdff8d] bg-clip-text text-transparent drop-shadow-2xl"
-          >
-            {cyclingWords[currentWord]}
-          </motion.span>
-        </AnimatePresence>
-        &nbsp;of Every
-      </div>
-      <div className="text-white font-bold leading-none m-0 p-0">
-        Filipino Athlete
-      </div>
-    </h1>
+    <h1 className="text-4xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-[1.1] md:leading-[0.9] m-0 p-0 font-bold drop-shadow-2xl relative z-0">
+  <div className="text-white font-bold m-0 p-0 block">
+    <span>The&nbsp;</span>
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={currentWord}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="inline-block font-bold bg-gradient-to-r from-[#fbd11e] to-[#fdff8d] bg-clip-text text-transparent drop-shadow-2xl"
+      >
+        {cyclingWords[currentWord]}
+      </motion.span>
+    </AnimatePresence>
+    <span>&nbsp;of Every</span>
+  </div>
+  <div className="text-white font-bold leading-none m-0 p-0">
+    Filipino Athlete
+  </div>
+</h1>
 
     {/* MOVED BELOW: Tagline */}
     <div className="mt-4 p-0 text-white text-xs md:text-sm font-normal tracking-tight drop-shadow-lg relative z-10">
