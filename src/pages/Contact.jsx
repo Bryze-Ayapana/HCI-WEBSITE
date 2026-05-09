@@ -1,16 +1,19 @@
-import React from 'react';
-import { FiFacebook, FiInstagram, FiYoutube, FiChevronLeft } from 'react-icons/fi'; // Added FiChevronLeft
+import React, { useState } from 'react';
+import { FiFacebook, FiInstagram, FiYoutube, FiChevronLeft, FiMapPin } from 'react-icons/fi';
 import { BsTwitterX } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom'; // Added useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
-  const navigate = useNavigate(); // Hook for back navigation
+  const navigate = useNavigate();
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   const agencyDirectories = [
     {
       title: "Commission Proper",
       accent: "border-ph-blue",
-      titleColor: "text-ph-blue dark:text-ph-yellow",
+      titleColor: "text-ph-blue dark:text-amber-500",
       data: [
         { name: "JOHN PATRICK C. GREGORIO", role: "Chairman", office: "Office of the Chairman", local: "168/888/148/158", email: "officeofthechairman@psc.gov.ph" },
         { name: "OLIVIA G. COO", role: "Commissioner", office: 'Office of Commissioner Olivia "Bong" G. Coo', local: "157", email: "ofc.commbc@psc.gov.ph" },
@@ -26,7 +29,7 @@ const Contact = () => {
     {
       title: "Bureau on Coordinating Secretariat and Support Services",
       accent: "border-ph-yellow",
-      titleColor: "text-yellow-600 dark:text-ph-yellow",
+      titleColor: "text-yellow-600 dark:text-amber-500",
       data: [
         { name: "ANNA CHRISTINE S. ABELLANA", role: "Officer-In-Charge", office: "Office of the Deputy Executive Director - Bureau on Coordinating Secretariat and Support Services", local: "194", email: "bcsss@psc.gov.ph" },
         { name: "ANNA M. RUIZ", role: "Officer-In-Charge", office: "Assistance Coordination Division", local: "138/156", email: "supportservices@psc.gov.ph" },
@@ -64,16 +67,15 @@ const Contact = () => {
   ];
 
   return (
-    /* PAGE BACKGROUND */
     <div className="min-h-screen bg-white dark:bg-transparent pt-16 md:pt-32 px-6 md:px-12 lg:px-24 pb-20 font-poppins transition-colors duration-300">
 
-      {/* ── MOBILE BACK NAVIGATION BAR (Adaptive Fix) ── */}
+      {/* ── MOBILE BACK NAVIGATION BAR ── */}
       <div className="
-        lg:hidden flex items-center px-4 py-3 
-        bg-white dark:bg-[#030A17] 
-        text-gray-900 dark:text-white 
-        border-b border-gray-200 dark:border-gray-800 
-        sticky top-[52px] z-50 
+        lg:hidden flex items-center px-4 py-3
+        bg-white dark:bg-[#030A17]
+        text-gray-900 dark:text-white
+        border-b border-gray-200 dark:border-gray-800
+        sticky top-[52px] z-50
         -mx-6 mt-[-16px] mb-8
       ">
         <button onClick={() => navigate(-1)} className="p-1">
@@ -83,7 +85,6 @@ const Contact = () => {
       </div>
 
       {/* TOP SECTION */}
-      {/* Changed to flex-col-reverse so Map goes on top in mobile, keeps side-by-side in desktop */}
       <div className="flex flex-col-reverse lg:flex-row gap-12 mb-20">
 
         {/* Left: Contact Details */}
@@ -137,19 +138,68 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Right: Google Map */}
+        {/* Right: Map — Google Maps iframe with map.jpg fallback */}
         <div className="w-full lg:w-2/3 h-[350px] md:h-[450px] rounded-[24px] overflow-hidden border border-gray-200 dark:border-white/10 shadow-lg relative">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.564177409419!2d120.99042501533618!3d14.56687008182963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c97825d143c1%3A0xc3cf2ce674f14125!2sRizal%20Memorial%20Sports%20Complex!5e0!3m2!1sen!2sph!4v1680000000000!5m2!1sen!2sph"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="PSC Location Map"
-            className="absolute inset-0 z-10"
-          />
+
+          {/* ── FALLBACK: map.jpg ── always rendered underneath */}
+          {/* Visible when iframe hasn't loaded yet or errored */}
+          <div
+            className={`absolute inset-0 z-10 transition-opacity duration-500 ${
+              iframeLoaded && !iframeError ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
+          >
+            <img
+              src="/map.jpg"
+              alt="PSC Location Map"
+              className="w-full h-full object-cover"
+            />
+
+            {/* Overlay: loading state — pulsing pin */}
+            {!iframeError && !iframeLoaded && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px]">
+                <div className="animate-bounce text-white drop-shadow-lg">
+                  <FiMapPin size={32} strokeWidth={2} />
+                </div>
+                <p className="mt-2 text-white text-xs font-semibold tracking-wider drop-shadow">
+                  Loading map…
+                </p>
+              </div>
+            )}
+
+            {/* Overlay: error state — tap to open in Google Maps */}
+            {iframeError && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 backdrop-blur-[2px]">
+                <a
+                  href="https://maps.google.com/?q=Rizal+Memorial+Sports+Complex,+Manila"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 dark:bg-white/10 backdrop-blur text-gray-800 dark:text-white text-xs font-bold shadow-lg border border-white/30 hover:bg-white transition-colors"
+                >
+                  <FiMapPin size={14} />
+                  Open in Google Maps
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* ── GOOGLE MAPS iframe ── loads on top once ready */}
+          {!iframeError && (
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.564177409419!2d120.99042501533618!3d14.56687008182963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c97825d143c1%3A0xc3cf2ce674f14125!2sRizal%20Memorial%20Sports%20Complex!5e0!3m2!1sen!2sph!4v1680000000000!5m2!1sen!2sph"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="PSC Location Map"
+              className={`absolute inset-0 z-20 transition-opacity duration-700 ${
+                iframeLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setIframeLoaded(true)}
+              onError={() => setIframeError(true)}
+            />
+          )}
         </div>
       </div>
 
@@ -168,7 +218,6 @@ const Contact = () => {
                 {directory.title}
               </h3>
 
-              {/* TABLE CARD */}
               <div className={`bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 border-t-2 ${directory.accent} rounded-[16px] overflow-x-auto shadow-sm`}>
                 <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead>
@@ -189,7 +238,7 @@ const Contact = () => {
                         <td className="px-6 py-4 text-[13px] text-gray-600 dark:text-gray-300 font-medium pr-8">{person.office}</td>
                         <td className="px-6 py-4 text-[13px] text-gray-600 dark:text-gray-300">{person.local}</td>
                         <td className="px-6 py-4 text-[13px] text-gray-400">
-                          <a href={`mailto:${person.email}`} className="hover:text-ph-blue dark:hover:text-ph-yellow transition-colors">
+                          <a href={`mailto:${person.email}`} className="hover:text-ph-blue dark:hover:text-amber-500 transition-colors">
                             {person.email}
                           </a>
                         </td>

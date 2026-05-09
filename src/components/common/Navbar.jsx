@@ -69,7 +69,7 @@ const Navbar = () => {
             backdrop-blur-md
             border border-gray-200/60 dark:border-white/10
             text-gray-700 dark:text-white
-            hover:text-ph-blue dark:hover:text-ph-yellow
+            hover:text-ph-blue dark:hover:text-amber-500
             transition-all shadow-sm
           "
         >
@@ -96,7 +96,7 @@ const Navbar = () => {
             className="
               flex items-center px-4 py-2
               text-gray-700 dark:text-white
-              hover:text-ph-blue dark:hover:text-ph-yellow
+              hover:text-ph-blue dark:hover:text-amber-500
               border-r border-gray-300 dark:border-white/20
               transition-colors duration-200
             "
@@ -112,14 +112,14 @@ const Navbar = () => {
               border-r border-gray-300 dark:border-white/20
               transition-colors duration-200
               ${inAbout
-                ? 'text-ph-blue dark:text-ph-yellow'
-                : 'text-gray-700 dark:text-white hover:text-ph-blue dark:hover:text-ph-yellow'
+                ? 'text-ph-blue dark:text-amber-500'
+                : 'text-gray-700 dark:text-white hover:text-ph-blue dark:hover:text-amber-500'
               }
             `}>
               About Us
               <FiChevronDown size={11} className="transition-transform duration-300 group-hover:rotate-180" />
               {inAbout && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-ph-blue dark:bg-ph-yellow" />
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-ph-blue dark:bg-amber-500" />
               )}
             </button>
 
@@ -139,7 +139,7 @@ const Navbar = () => {
                 p-4 text-left
               ">
                 <h3 className="
-                  text-ph-blue dark:text-ph-yellow
+                  text-ph-blue dark:text-amber-500
                   font-bold text-[11px] tracking-tight
                   border-b border-gray-200 dark:border-white/5
                   pb-2 mb-3
@@ -200,14 +200,14 @@ const NavItem = ({ to, label, active }) => (
       border-r border-gray-300 dark:border-white/20
       transition-colors duration-200 uppercase font-bold text-[10px]
       ${active
-        ? 'text-ph-blue dark:text-ph-yellow'
-        : 'text-gray-700 dark:text-white hover:text-ph-blue dark:hover:text-ph-yellow'
+        ? 'text-ph-blue dark:text-amber-500'
+        : 'text-gray-700 dark:text-white hover:text-ph-blue dark:hover:text-amber-500'
       }
     `}
   >
     {label}
     {active && (
-      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-ph-blue dark:bg-ph-yellow" />
+      <span className="absolute bottom-0 left-0 w-full h-[2px] bg-ph-blue dark:bg-amber-500" />
     )}
   </Link>
 );
